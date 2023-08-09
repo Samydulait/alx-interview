@@ -1,4 +1,4 @@
-# 0 starwars characters
+# 0x06 Starwars Api
 
 Install Node 10
 
