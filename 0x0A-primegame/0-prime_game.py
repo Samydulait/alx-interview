@@ -1,26 +1,29 @@
 #!/usr/bin/python3
-"""Module of Prime game
-"""
-
+""" Module for solving prime game question """
 
 def isWinner(x, nums):
-    """Determines the winner of a prime game session with `x` times.
-    """
-    if x < 1 or not nums:
+    """function that checks for the winner"""
+    if not nums or x < 1:
         return None
-    mine_wins, yours_wins = 0, 0
-    n = max(nums)
-    primes = [True for _ in range(1, n + 1, 1)]
-    primes[0] = False
-    for i, is_prime in enumerate(primes, 1):
-        if i == 1 or not is_prime:
+    max_num = max(nums)
+
+    my_filter = [True for _ in range(max(max_num + 1, 2))]
+    for i in range(2, int(pow(max_num, 0.5)) + 1):
+        if not my_filter[i]:
             continue
-        for j in range(i + i, n + 1, i):
-            primes[j - 1] = False
-    for _, n in zip(range(x), nums):
-        primes_count = len(list(filter(lambda x: x, primes[0: n])))
-        yours_wins += primes_count % 2 == 0
-        mine_wins += primes_count % 2 == 1
-    if mine_wins == yours_wins:
+        for j in range(i * i, max_num + 1, i):
+            my_filter[j] = False
+    my_filter[0] = my_filter[1] = False
+    y = 0
+    for i in range(len(my_filter)):
+        if my_filter[i]:
+            y += 1
+        my_filter[i] = y
+    player1 = 0
+    for x in nums:
+        player1 += my_filter[x] % 2 == 1
+    if player1 * 2 == len(nums):
         return None
-    return 'mine' if mine_wins > yours_wins else 'yours'
+    if player1 * 2 > len(nums):
+        return "Maria"
+    return "Ben"
